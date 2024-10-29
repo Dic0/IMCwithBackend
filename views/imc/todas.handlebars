@@ -1,0 +1,28 @@
+<h1>Todas as Informações de IMC:</h1>
+<ul class="imc-lista">
+  {{#if nenhumaInformacao}}
+    <p>Não há informações cadastradas</p>
+  {{/if}}
+  {{#each informacoesIMC}}
+    <li>
+      <a href="/imc/editar/{{this.id}}" class="titulo">{{this.nome}}</a>
+      <span class="detalhes">
+        Peso:
+        {{this.peso}}
+        kg, Altura:
+        {{this.altura}}
+        m, IMC:
+        {{this.imc}}
+      </span>
+      <span class="actions">
+        <form action="/imc/remover" method="POST">
+          <input type="hidden" name="id" value="{{this.id}}" />
+          <button type="submit">
+            <i class="bi bi-x-lg"></i>
+            Remover
+          </button>
+        </form>
+      </span>
+    </li>
+  {{/each}}
+</ul>
