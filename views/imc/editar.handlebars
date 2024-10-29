@@ -25,9 +25,9 @@
   <div class="form-control">
     <label for="sexo">Sexo:</label>
     <select id="sexo" name="sexo" required>
-      <option value="masculino" {{usuario.sexo === 'masculino' ? 'selected' : ''}}>Masculino</option>
-      <option value="feminino" {{usuario.sexo === 'feminino' ? 'selected' : ''}}>Feminino</option>
-      <option value="outro" {{usuario.sexo === 'outro' ? 'selected' : ''}}>Outro</option>
+        <option value="masculino" {{#if (eq usuario.sexo 'masculino')}}selected{{/if}}>Masculino</option>
+        <option value="feminino" {{#if (eq usuario.sexo 'feminino')}}selected{{/if}}>Feminino</option>
+        <option value="outro" {{#if (eq usuario.sexo 'outro')}}selected{{/if}}>Outro</option>
     </select>
   </div>
   

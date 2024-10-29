@@ -5,13 +5,20 @@ const exphbs = require("express-handlebars");
 const app = express();
 const conn = require("./db/conn");
 
-// Configuração do Handlebars
+// Configuração do Handlebars com o helper 'eq' e permissão para acesso ao protótipo
 const hbs = exphbs.create({
-  defaultLayout: "main", // Define o layout padrão (caso tenha um)
-  extname: ".handlebars", // Define a extensão dos arquivos de template
+  defaultLayout: "main",
+  extname: ".handlebars",
+  helpers: {
+    eq: (a, b) => a === b,
+  },
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true, // Permite o acesso a propriedades do protótipo
+    allowProtoMethodsByDefault: true, // Permite o acesso a métodos do protótipo (opcional)
+  },
 });
 
-app.engine("handlebars", hbs.engine); // Usa hbs.engine para configurar o Handlebars
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 // Middlewares
