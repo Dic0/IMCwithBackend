@@ -1,9 +1,7 @@
 const Usuario = require("../models/Usuario");
 
 // Função para calcular o IMC
-const calcularIMC = (peso, altura) => {
-  return peso / (altura * altura);
-};
+const calcularIMC = (peso, altura) => peso / (altura * altura);
 
 module.exports = class IMCController {
   // Renderiza a página de criação do usuário
@@ -57,11 +55,10 @@ module.exports = class IMCController {
 
     try {
       const usuario = await Usuario.findByPk(id);
-      if (usuario) {
-        res.render("imc/editar", { usuario });
-      } else {
-        res.status(404).send("Usuário não encontrado.");
+      if (!usuario) {
+        return res.status(404).send("Usuário não encontrado.");
       }
+      res.render("imc/editar", { usuario });
     } catch (err) {
       console.error("Erro ao buscar usuário:", err);
       res.status(500).send("Erro ao buscar usuário.");
@@ -83,12 +80,12 @@ module.exports = class IMCController {
     const pesoConvertido = parseFloat(peso);
     const alturaConvertida = parseFloat(altura);
 
-    if (
-      isNaN(pesoConvertido) ||
-      isNaN(alturaConvertida) ||
-      pesoConvertido <= 0 ||
-      alturaConvertida <= 0
-    ) {
+    const validarPesoEAltura = (peso, altura) => {
+      return isNaN(peso) || isNaN(altura) || peso <= 0 || altura <= 0;
+    };
+
+    // Uso da função de validação
+    if (validarPesoEAltura(pesoConvertido, alturaConvertida)) {
       return res
         .status(400)
         .send("Peso e altura devem ser valores numéricos positivos.");
@@ -102,19 +99,16 @@ module.exports = class IMCController {
       const usuario = await Usuario.findByPk(id);
       console.log("Usuário encontrado:", usuario);
 
-      if (usuario) {
-        await usuario.update({
-          nome,
-          peso: pesoConvertido,
-          altura: alturaConvertida,
-          idade,
-          sexo,
-          imc,
-        });
-        res.redirect("/imc");
-      } else {
-        res.status(404).send("Usuário não encontrado.");
-      }
+      usuario
+        ? (await usuario.update({
+            nome,
+            peso: pesoConvertido,
+            altura: alturaConvertida,
+            idade,
+            sexo,
+            imc,
+          })) && res.redirect("/imc")
+        : res.status(404).send("Usuário não encontrado.");
     } catch (err) {
       console.error("Erro ao atualizar usuário:", err);
       res.status(500).send("Erro ao atualizar usuário.");

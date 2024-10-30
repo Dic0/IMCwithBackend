@@ -9,12 +9,10 @@ const conn = require("./db/conn");
 const hbs = exphbs.create({
   defaultLayout: "main",
   extname: ".handlebars",
-  helpers: {
-    eq: (a, b) => a === b,
-  },
+  helpers: { eq: (a, b) => a === b },
   runtimeOptions: {
-    allowProtoPropertiesByDefault: true, // Permite o acesso a propriedades do protótipo
-    allowProtoMethodsByDefault: true, // Permite o acesso a métodos do protótipo (opcional)
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
   },
 });
 
